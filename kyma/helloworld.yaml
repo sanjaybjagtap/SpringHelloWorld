@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: docker.io/sanjaybjagtap/springhelloworld:v1.3.0
+          image: docker.io/sanjaybjagtap/springhelloworld:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
