@@ -52,7 +52,7 @@ jobs:
 
 
       - name: Deploy to Kyma
-        run : | 
+        run: | 
           sed -i e 's/:v1.3.0/:${{github.sha}}/g' kyma/helloworld.yaml
           kubectl apply -f kyma/helloworld.yaml -n githubactiontest
 
