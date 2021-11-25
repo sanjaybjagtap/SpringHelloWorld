@@ -38,6 +38,24 @@ jobs:
         username: ${{secrets.DOCKERHUB_USERNAME}}
         password: ${{secrets.DOCKERHUB_PASSWORD}}        
 
+  deploy-hellpworld:
+    runs-on: ubuntu-latest
+    name: deploy springhelloworld on kyma
+    needs: [build]
+    steps:
+      - name: checkout the code
+        uses: actions/checkout@v2
+
+      - name: Kubernetes set context
+        method: kubeconfig
+        kuberconfig: ${{secrets.KUBECONFIG}}
+
+
+      - name: Deploy to Kyma
+        run : | 
+          sed -i e 's/:v1.3.0/:${{github.sha}}/g' kyma/helloworld.yaml
+          kubectl apply -f kyma/helloworld.yaml -n githubactiontest
+
 
     # - name: Upload artifact
     #   uses: actions/upload-artifact@v2
