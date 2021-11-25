@@ -48,8 +48,10 @@ jobs:
 
       - name: Kubernetes set context
         uses: Azure/k8s-set-context@v1.1
-        method: kubeconfig
-        kuberconfig: ${{secrets.KUBECONFIG}}
+        with:
+          cluster-type: generic
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
 
 
       - name: Deploy to Kyma
