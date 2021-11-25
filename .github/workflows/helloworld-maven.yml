@@ -47,13 +47,14 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Kubernetes set context
+        uses: Azure/k8s-set-context@v1.1
         method: kubeconfig
         kuberconfig: ${{secrets.KUBECONFIG}}
 
 
       - name: Deploy to Kyma
         run: |
-          sed -i e 's/:v1.3.0/:${{github.sha}}/g' kyma/helloworld.yaml
+          sed -i'' -e 's/:v1.2.0/:${{ github.sha }}/g' kyma/helloworld.yaml
           kubectl apply -f kyma/helloworld.yaml -n githubactiontest
 
 
