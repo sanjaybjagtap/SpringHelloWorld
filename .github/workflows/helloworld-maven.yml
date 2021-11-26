@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
     name: Maven Build and docker image
 
     steps:
@@ -36,7 +36,7 @@ jobs:
         tags: latest
         registry: docker.io
         username: ${{secrets.DOCKERHUB_USERNAME}}
-        password: ${{secrets.DOCKERHUB_PASSWORD}}        
+        password: ${{secrets.DOCKERHUB_PASSWORD}}    
 
   deploy-hellpworld:
     runs-on: ubuntu-latest
@@ -57,7 +57,7 @@ jobs:
       - name: Deploy to Kyma
         run: |
           kubectl apply -f kyma/helloworld.yaml -n githubactiontest
-          
+
 
 
     # - name: Upload artifact
