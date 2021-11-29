@@ -9,6 +9,7 @@ on:
   pull_request:
     branches: [ master ]
 
+
 jobs:
   build:
 
@@ -29,34 +30,85 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Build and push docker image
-      uses: mr-smithers-excellent/docker-build-push@v5
-      with:
-        image: sanjaybjagtap/springhelloworld
-        tags: latest
-        registry: docker.io
-        username: ${{secrets.DOCKERHUB_USERNAME}}
-        password: ${{secrets.DOCKERHUB_PASSWORD}}    
+  #   - name: Build and push docker image
+  #     uses: mr-smithers-excellent/docker-build-push@v5
+  #     with:
+  #       image: sanjaybjagtap/springhelloworld
+  #       tags: latest
+  #       registry: docker.io
+  #       username: ${{secrets.DOCKERHUB_USERNAME}}
+  #       password: ${{secrets.DOCKERHUB_PASSWORD}}    
 
-  deploy-hellpworld:
+  # deploy-hellpworld:
+  #   runs-on: ubuntu-latest
+  #   name: deploy springhelloworld on kyma
+  #   needs: [build]
+  #   steps:
+  #     - name: checkout the code
+  #       uses: actions/checkout@v2
+
+  #     - name: Kubernetes set context
+  #       uses: Azure/k8s-set-context@v1.1
+  #       with:
+  #         cluster-type: generic
+  #         method: kubeconfig
+  #         kubeconfig: ${{ secrets.KUBECONFIG }}
+
+
+  #     - name: Deploy to Kyma
+  #       run: |
+  #         kubectl apply -f kyma/helloworld.yaml -n githubactiontest
+
+
+  analyze:
+    name: Analyze
     runs-on: ubuntu-latest
-    name: deploy springhelloworld on kyma
-    needs: [build]
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
+        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
+        # Learn more about CodeQL language support at https://git.io/codeql-language-support
+
     steps:
-      - name: checkout the code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Kubernetes set context
-        uses: Azure/k8s-set-context@v1.1
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
         with:
-          cluster-type: generic
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG }}
+          languages: ${{ matrix.language }}
+          # If you wish to specify custom queries, you can do so here or in a config file.
+          # By default, queries listed here will override any specified in a config file.
+          # Prefix the list here with "+" to use these queries and those in the config file.
+          # queries: ./path/to/local/query, your-org/your-repo/queries@main
+
+      # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
+      # If this step fails, then you should remove it and run the build manually (see below)
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v1
+
+      # ℹ️ Command-line programs to run using the OS shell.
+      # 📚 https://git.io/JvXDl
+
+      # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
+      #    and modify them (or add more) to build your code if your project
+      #    uses a compiled language
+
+      #- run: |
+      #   make bootstrap
+      #   make release
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
 
 
-      - name: Deploy to Kyma
-        run: |
-          kubectl apply -f kyma/helloworld.yaml -n githubactiontest
 
 
     # - name: Upload artifact
