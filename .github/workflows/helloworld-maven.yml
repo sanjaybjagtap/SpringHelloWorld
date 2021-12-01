@@ -33,7 +33,7 @@ jobs:
     - name: ZAP Scan
       uses: zaproxy/action-baseline@v0.6.1
       with:
-        target: 'http://localhost:8082/com.sap.banking.ocbui.8.3.SP05-SNAPSHOT.dev'
+        target: 'https://helloworldapp.c-764b793.kyma-stage.shoot.live.k8s-hana.ondemand.com'
 
   #   - name: Build and push docker image
   #     uses: mr-smithers-excellent/docker-build-push@v5
