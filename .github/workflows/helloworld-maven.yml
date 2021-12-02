@@ -29,41 +29,50 @@ jobs:
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-      
+
+  
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v1
+
+    - name: golangci-lint
+      uses: reviewdog/action-golangci-lint@v1
+      with:
+        github_token: ${{ secrets.github_token }}
+
     # - name: ZAP Scan
     #   uses: zaproxy/action-baseline@v0.6.1
     #   with:
     #     #target: 'https://helloworldapp.c-764b793.kyma-stage.shoot.live.k8s-hana.ondemand.com'
     #     target: 'https://web.app-cl.dev.fioneer.com'
 
-    - name: Build and push docker image
-      uses: mr-smithers-excellent/docker-build-push@v5
-      with:
-        image: sanjaybjagtap/springhelloworld
-        tags: latest
-        registry: docker.io
-        username: ${{secrets.DOCKERHUB_USERNAME}}
-        password: ${{secrets.DOCKERHUB_PASSWORD}}    
+  #   - name: Build and push docker image
+  #     uses: mr-smithers-excellent/docker-build-push@v5
+  #     with:
+  #       image: sanjaybjagtap/springhelloworld
+  #       tags: latest
+  #       registry: docker.io
+  #       username: ${{secrets.DOCKERHUB_USERNAME}}
+  #       password: ${{secrets.DOCKERHUB_PASSWORD}}    
 
-  deploy-hellpworld:
-    runs-on: ubuntu-latest
-    name: deploy springhelloworld on kyma
-    needs: [build]
-    steps:
-      - name: checkout the code
-        uses: actions/checkout@v2
+  # deploy-hellpworld:
+  #   runs-on: ubuntu-latest
+  #   name: deploy springhelloworld on kyma
+  #   needs: [build]
+  #   steps:
+  #     - name: checkout the code
+  #       uses: actions/checkout@v2
 
-      - name: Kubernetes set context
-        uses: Azure/k8s-set-context@v1.1
-        with:
-          cluster-type: generic
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG }}
+  #     - name: Kubernetes set context
+  #       uses: Azure/k8s-set-context@v1.1
+  #       with:
+  #         cluster-type: generic
+  #         method: kubeconfig
+  #         kubeconfig: ${{ secrets.KUBECONFIG }}
 
 
-      - name: Deploy to Kyma
-        run: |
-          kubectl apply -f kyma/helloworld.yaml -n githubactiontest
+  #     - name: Deploy to Kyma
+  #       run: |
+  #         kubectl apply -f kyma/helloworld.yaml -n githubactiontest
 
 
   
