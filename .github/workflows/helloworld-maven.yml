@@ -48,6 +48,9 @@ jobs:
       #   with:
       #     sarif_file: snyk.sarif
 
+      - name: Checkout repository2
+        uses: actions/checkout@v2
+
       - name: Depcheck
         uses: dependency-check/Dependency-Check_Action@main
         id: Depcheck
