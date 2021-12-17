@@ -17,10 +17,18 @@ jobs:
     name: Maven Build and docker image
 
     steps:
-      
+
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Depcheck
+      uses: dependency-check/Dependency-Check_Action@main
+      id: Depcheck     
+      with:
+        project: 'connector'
+        path: '.'
+        format: 'XML'
+        
     # - name: Depcheck
     #   uses: dependency-check/Dependency-Check_Action@main
     #   id: Depcheck
