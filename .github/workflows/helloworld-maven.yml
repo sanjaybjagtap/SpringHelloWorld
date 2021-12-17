@@ -55,8 +55,8 @@ jobs:
         with:
          project: 'test'
          path: '.'
-         format: 'HTML'    
-         args: >
+         format: 'XML'    
+            args: >
            --failOnCVSS 7
            --enableRetired
 
