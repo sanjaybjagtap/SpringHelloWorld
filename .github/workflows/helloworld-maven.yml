@@ -118,12 +118,6 @@ jobs:
     #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     #   run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=sanjaybjagtap_SpringHelloWorld    
 
-    # - name: ZAP Scan
-    #   uses: zaproxy/action-baseline@v0.6.1
-    #   with:
-    #     #target: 'https://helloworldapp.c-764b793.kyma-stage.shoot.live.k8s-hana.ondemand.com'
-    #     target: 'https://web.app-cl.dev.fioneer.com'
-
   #   - name: Build and push docker image
   #     uses: mr-smithers-excellent/docker-build-push@v5
   #     with:
